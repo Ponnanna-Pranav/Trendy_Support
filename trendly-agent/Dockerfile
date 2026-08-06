@@ -20,7 +20,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
-COPY --from=frontend-build /app/frontend/dist ./static
+COPY --from=frontend-build /frontend/dist ./static
 
 # Persist SQLite outside the image layer via a mounted volume in production
 ENV TRENDLY_DB_PATH=/app/data/data_store.sqlite3
