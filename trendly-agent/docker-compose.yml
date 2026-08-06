@@ -1,0 +1,24 @@
+services:
+  trendly-agent:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
+      - ADMIN_KEY=${ADMIN_KEY:-}
+      - WIDGET_API_KEY=${WIDGET_API_KEY:-}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
+      - RATE_LIMIT_PER_MINUTE=${RATE_LIMIT_PER_MINUTE:-30}
+      - POLICY_SEARCH_MODE=${POLICY_SEARCH_MODE:-semantic}
+    volumes:
+      - trendly-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  trendly-data:
